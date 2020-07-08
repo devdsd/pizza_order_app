@@ -17,3 +17,18 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// List all pizza orders
+Route::get('/pizzas', 'PizzaController@index');
+
+// Display specified Pizza Order
+Route::get('/pizza/{id}', 'PizzaController@show');
+
+// Create a new Pizza Order
+Route::post('/pizza', 'PizzaController@store');
+
+// Update Pizza Order
+Route::put('/pizza', 'PizzaController@store');
+
+// Delete a Pizza Order
+Route::delete('/pizza/{id}', 'PizzaController@destroy');
