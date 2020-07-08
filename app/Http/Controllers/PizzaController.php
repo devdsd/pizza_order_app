@@ -19,6 +19,7 @@ class PizzaController extends Controller
     {
         // Get Pizzas
         $pizzas = Pizza::paginate(5);
+        // $pizzas = Pizza::all();
 
         // return the collection of pizzas as a resource
         return PizzaResource::collection($pizzas);
@@ -43,7 +44,17 @@ class PizzaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $pizza = $request->isMethod('put') ? Pizza::findOrFail($request->id) : new Pizza;
+
+        $pizza->id = $request->input('id');
+        $pizza->customer_name = $request->input('customer_name');
+        $pizza->type = $request->input('type');
+        $pizza->crust = $request->input('crust');
+
+        if($pizza->save()) {
+            return new PizzaResource($pizza);
+        }
+        
     }
 
     /**
@@ -54,7 +65,11 @@ class PizzaController extends Controller
      */
     public function show($id)
     {
-        //
+        // Get a Specified Pizza Order
+        $pizza = Pizza::findOrFail($id);
+
+        // Return the specified pizza order
+        return new PizzaResource($pizza);
     }
 
     /*
@@ -90,6 +105,12 @@ class PizzaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // Get a Specified Pizza Order
+        $pizza = Pizza::findOrFail($id);
+
+        // Delete the spicific pizza order
+        if($pizza->delete()) {
+            return new PizzaResource($pizza);
+        }
     }
 }

@@ -14,6 +14,20 @@ class Pizza extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        // return parent::toArray($request);
+
+        // define spicic format of the data
+        return [
+            'id' => $this->id,
+            'customer_name' => $this->customer_name,
+            'type' => $this->type,
+            'crust' => $this->crust
+        ];
+    }
+
+    public function with($request) {
+        return [
+            'author' => 'Diether Dayondon'
+        ];
     }
 }
