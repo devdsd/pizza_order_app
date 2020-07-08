@@ -5,7 +5,7 @@
 use App\Model;
 use Faker\Generator as Faker;
 
-$factory->define(Model::class, function (Faker $faker) {
+$factory->define(App\Pizza::class, function (Faker $faker) {
     return [
         'customer_name' => $faker->text(15),
         'type' => $faker->text(20),
