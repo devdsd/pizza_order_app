@@ -18,7 +18,7 @@ class PizzaController extends Controller
     public function index()
     {
         // Get Pizzas
-        $pizzas = Pizza::paginate(5);
+        $pizzas = Pizza::orderBy('created_at', 'desc')->paginate(5);
         // $pizzas = Pizza::all();
 
         // return the collection of pizzas as a resource
@@ -44,9 +44,9 @@ class PizzaController extends Controller
      */
     public function store(Request $request)
     {
-        $pizza = $request->isMethod('put') ? Pizza::findOrFail($request->id) : new Pizza;
+        $pizza = $request->isMethod('put') ? Pizza::findOrFail($request->pizza_id) : new Pizza;
 
-        $pizza->id = $request->input('id');
+        $pizza->id = $request->input('pizza_id');
         $pizza->customer_name = $request->input('customer_name');
         $pizza->type = $request->input('type');
         $pizza->crust = $request->input('crust');
