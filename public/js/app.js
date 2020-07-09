@@ -1914,6 +1914,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1929,16 +1952,35 @@ __webpack_require__.r(__webpack_exports__);
       edit: false
     };
   },
-  create: function create() {
+  created: function created() {
     this.fetchPizzas();
   },
   methods: {
-    fetchPizzas: function fetchPizzas() {
-      fetch('api/pizzas').then(function (res) {
+    fetchPizzas: function fetchPizzas(page_url) {
+      var _this = this;
+
+      var paginatevar = this;
+      page_url = page_url || '/api/pizzas';
+      fetch(page_url).then(function (res) {
         return res.json();
       }).then(function (res) {
-        console.log(res.data);
-      }); // balikan (dili maka log())
+        // console.log(res.data);
+        _this.pizzas = res.data;
+        paginatevar.makePagination(res.meta, res.links);
+      })["catch"](function (error) {
+        return console.log(error);
+      });
+    },
+    makePagination: function makePagination(meta, links) {
+      var pagination = {
+        current_page: meta.current_page,
+        last_page: meta.last_page,
+        next_page_url: links.next,
+        previous_page_url: links.prev,
+        first_page_url: links.first,
+        last_page_url: links.last
+      };
+      this.pagination = pagination;
     }
   }
 });
@@ -37529,16 +37571,149 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c(
+    "div",
+    [
+      _c("h2", [_vm._v("Pizza Orders")]),
+      _vm._v(" "),
+      _c("nav", { attrs: { "aria-label": "Page navigation example" } }, [
+        _c("ul", { staticClass: "pagination" }, [
+          _c(
+            "li",
+            {
+              staticClass: "page-item",
+              class: [{ disabled: !_vm.pagination.previous_page_url }]
+            },
+            [
+              _c(
+                "a",
+                {
+                  staticClass: "page-link",
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      return _vm.fetchPizzas(_vm.pagination.first_page_url)
+                    }
+                  }
+                },
+                [_vm._v(" << First ")]
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "li",
+            {
+              staticClass: "page-item",
+              class: [{ disabled: !_vm.pagination.previous_page_url }]
+            },
+            [
+              _c(
+                "a",
+                {
+                  staticClass: "page-link",
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      return _vm.fetchPizzas(_vm.pagination.previous_page_url)
+                    }
+                  }
+                },
+                [_vm._v(" < Previous ")]
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c("li", { staticClass: "page-item disabled" }, [
+            _c(
+              "a",
+              { staticClass: "page-link text-dark", attrs: { href: "#" } },
+              [
+                _vm._v(
+                  " Page " +
+                    _vm._s(_vm.pagination.current_page) +
+                    " of " +
+                    _vm._s(_vm.pagination.last_page) +
+                    " "
+                )
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c(
+            "li",
+            {
+              staticClass: "page-item",
+              class: [{ disabled: !_vm.pagination.next_page_url }]
+            },
+            [
+              _c(
+                "a",
+                {
+                  staticClass: "page-link",
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      return _vm.fetchPizzas(_vm.pagination.next_page_url)
+                    }
+                  }
+                },
+                [_vm._v(" Next > ")]
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "li",
+            {
+              staticClass: "page-item",
+              class: [{ disabled: !_vm.pagination.next_page_url }]
+            },
+            [
+              _c(
+                "a",
+                {
+                  staticClass: "page-link",
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      return _vm.fetchPizzas(_vm.pagination.last_page_url)
+                    }
+                  }
+                },
+                [_vm._v(" Last >>")]
+              )
+            ]
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _vm._l(_vm.pizzas, function(pizza) {
+        return _c(
+          "div",
+          { key: pizza.id, staticClass: "card card-body mb-3" },
+          [
+            _c("h3", [_vm._v(" " + _vm._s(pizza.customer_name) + " ")]),
+            _vm._v(" "),
+            _c("hr"),
+            _vm._v(" "),
+            _c("p", [
+              _c("strong", [_vm._v(" Pizza Type: ")]),
+              _vm._v(" " + _vm._s(pizza.type) + " ")
+            ]),
+            _vm._v(" "),
+            _c("p", [
+              _c("strong", [_vm._v(" Crust: ")]),
+              _vm._v(" " + _vm._s(pizza.crust) + " ")
+            ])
+          ]
+        )
+      })
+    ],
+    2
+  )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", [_c("h2", [_vm._v("Pizzas")])])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
