@@ -1937,6 +1937,97 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1949,6 +2040,44 @@ __webpack_require__.r(__webpack_exports__);
       },
       pizza_id: '',
       pagination: {},
+      pizzatypes: [{
+        type: 'Garlic Pizza',
+        value: 'Garlic Pizza'
+      }, {
+        type: 'Hawaiian',
+        value: 'Hawaiian'
+      }, {
+        type: 'Margherita',
+        value: 'Margherita'
+      }, {
+        type: 'Cheese Pizza',
+        value: 'Cheese Pizza'
+      }, {
+        type: 'Pepperoni Pizza',
+        value: 'Pepperoni Pizza'
+      }, {
+        type: 'Veggie Pizza',
+        value: 'Veggie Pizza'
+      }, {
+        type: 'Meat Pizza',
+        value: 'Meat Pizza'
+      }],
+      pizzacrusts: [{
+        crust: 'Chessy Crust',
+        value: 'Chessy'
+      }, {
+        crust: 'Thick Crust',
+        value: 'Thick'
+      }, {
+        crust: 'Thin Crust',
+        value: 'Thin'
+      }, {
+        crust: 'Deep Crust',
+        value: 'Deep'
+      }, {
+        crust: 'Stuffed Crust',
+        value: 'Stuffed'
+      }],
       edit: false
     };
   },
@@ -1981,6 +2110,76 @@ __webpack_require__.r(__webpack_exports__);
         last_page_url: links.last
       };
       this.pagination = pagination;
+    },
+    deletePizza: function deletePizza(id) {
+      var _this2 = this;
+
+      if (confirm("Are you sure to delete this order?")) {
+        fetch("api/pizza/".concat(id), {
+          method: "delete"
+        }).then(function (res) {
+          return res.json();
+        }).then(function (data) {
+          alert('Pizza Order Removed!');
+
+          _this2.fetchPizzas();
+        })["catch"](function (error) {
+          return console.log(error);
+        });
+      }
+    },
+    addPizza: function addPizza() {
+      var _this3 = this;
+
+      if (this.edit === false) {
+        // Add Pizza
+        fetch('api/pizza', {
+          method: 'post',
+          body: JSON.stringify(this.pizza),
+          headers: {
+            'content-type': 'application/json'
+          }
+        }).then(function (res) {
+          return res.json();
+        }).then(function (data) {
+          _this3.pizza.customer_name = '';
+          _this3.pizza.type = '';
+          _this3.crust = '';
+          alert('Pizza Order Added!');
+
+          _this3.fetchPizzas();
+        })["catch"](function (error) {
+          return console.log(error);
+        });
+      } else {
+        // Edit Pizza
+        fetch('api/pizza', {
+          method: 'put',
+          body: JSON.stringify(this.pizza),
+          headers: {
+            'content-type': 'application/json'
+          }
+        }).then(function (res) {
+          return res.json();
+        }).then(function (data) {
+          _this3.pizza.customer_name = '';
+          _this3.pizza.type = '';
+          _this3.crust = '';
+          alert('Pizza Order Updated!');
+
+          _this3.fetchPizzas();
+        })["catch"](function (error) {
+          return console.log(error);
+        });
+      }
+    },
+    editPizza: function editPizza(pizza) {
+      this.edit = true;
+      this.pizza.id = pizza.id;
+      this.pizza.pizza_id = pizza.id;
+      this.pizza.customer_name = pizza.customer_name;
+      this.pizza.type = pizza.type;
+      this.pizza.crust = pizza.crust;
     }
   }
 });
@@ -37574,6 +37773,169 @@ var render = function() {
   return _c(
     "div",
     [
+      _c("h2", [_vm._v(" Order a Pizza ")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "jumbotron" }, [
+        _c(
+          "form",
+          {
+            staticClass: "mb-5",
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.addPizza()
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "form-group" }, [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.pizza.customer_name,
+                    expression: "pizza.customer_name"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { placeholder: "Customer Name" },
+                domProps: { value: _vm.pizza.customer_name },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.pizza, "customer_name", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.pizza.type,
+                      expression: "pizza.type"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { id: "pizzatype" },
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.$set(
+                        _vm.pizza,
+                        "type",
+                        $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      )
+                    }
+                  }
+                },
+                [
+                  _c("option", { attrs: { value: "", selected: "" } }, [
+                    _vm._v(" Select pizza type ... ")
+                  ]),
+                  _vm._v(" "),
+                  _vm._l(_vm.pizzatypes, function(pizzatype) {
+                    return _c(
+                      "option",
+                      {
+                        key: pizzatype.type,
+                        domProps: { value: pizzatype.value }
+                      },
+                      [_vm._v(" " + _vm._s(pizzatype.type) + " ")]
+                    )
+                  })
+                ],
+                2
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _vm._m(1),
+              _vm._v(" "),
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.pizza.crust,
+                      expression: "pizza.crust"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { id: "pizzabase" },
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.$set(
+                        _vm.pizza,
+                        "crust",
+                        $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      )
+                    }
+                  }
+                },
+                [
+                  _c("option", { attrs: { value: "", selected: "" } }, [
+                    _vm._v("Select crust ... ")
+                  ]),
+                  _vm._v(" "),
+                  _vm._l(_vm.pizzacrusts, function(pizzacrust) {
+                    return _c(
+                      "option",
+                      {
+                        key: pizzacrust.crust,
+                        domProps: { value: pizzacrust.value }
+                      },
+                      [_vm._v(" " + _vm._s(pizzacrust.crust) + " ")]
+                    )
+                  })
+                ],
+                2
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-outline-info",
+                attrs: { type: "submit" }
+              },
+              [_vm._v(" Order Pizza ")]
+            )
+          ]
+        )
+      ]),
+      _vm._v(" "),
       _c("h2", [_vm._v("Pizza Orders")]),
       _vm._v(" "),
       _c("nav", { attrs: { "aria-label": "Page navigation example" } }, [
@@ -37705,6 +38067,36 @@ var render = function() {
             _c("p", [
               _c("strong", [_vm._v(" Crust: ")]),
               _vm._v(" " + _vm._s(pizza.crust) + " ")
+            ]),
+            _vm._v(" "),
+            _c("hr"),
+            _vm._v(" "),
+            _c("p", { staticStyle: { "text-align": "right" } }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-outline-primary",
+                  on: {
+                    click: function($event) {
+                      return _vm.editPizza(pizza)
+                    }
+                  }
+                },
+                [_vm._v(" Edit ")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-danger",
+                  on: {
+                    click: function($event) {
+                      return _vm.deletePizza(pizza.id)
+                    }
+                  }
+                },
+                [_vm._v(" Delete ")]
+              )
             ])
           ]
         )
@@ -37713,7 +38105,28 @@ var render = function() {
     2
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("strong", [
+      _c("label", { attrs: { for: "pizzatype" } }, [
+        _vm._v(" Choose pizza type: ")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("strong", [
+      _c("label", { attrs: { for: "pizzabase" } }, [
+        _vm._v(" Choose base type: ")
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
