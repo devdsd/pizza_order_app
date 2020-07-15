@@ -18,7 +18,7 @@ class PizzaController extends Controller
     public function index()
     {
         // Get Pizzas
-        $pizzas = Pizza::orderBy('created_at', 'desc')->paginate(10);
+        $pizzas = Pizza::orderBy('created_at', 'desc')->paginate(5);
         // $pizzas = Pizza::all();
 
         // return the collection of pizzas as a resource
