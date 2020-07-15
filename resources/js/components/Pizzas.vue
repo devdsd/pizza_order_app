@@ -6,7 +6,7 @@
       <form @submit.prevent="addPizza()" class="mb-5">
         <div class="form-group">
           
-          <strong><p> Customer Name: <p></strong>
+          <strong><p> Customer Name: </p></strong>
           <input class="form-control" placeholder="Customer Name" v-model="pizza.customer_name" />
         </div>
 
