@@ -14,9 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Authentication Stuffs
+Route::post('/register', 'api\AuthController@register');
+Route::post('/login', 'api\AuthController@login');
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
 
 // List all pizza orders
 Route::get('/pizzas', 'PizzaController@index');

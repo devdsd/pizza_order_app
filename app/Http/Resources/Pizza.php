@@ -27,6 +27,7 @@ class Pizza extends JsonResource
 
     public function with($request) {
         return [
+            'message' => 'Retrieved successfully!',
             'author' => 'Diether Dayondon'
         ];
     }

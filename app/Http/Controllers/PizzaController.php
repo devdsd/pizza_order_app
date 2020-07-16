@@ -44,7 +44,15 @@ class PizzaController extends Controller
      */
     public function store(Request $request)
     {
-        $pizza = $request->isMethod('put') ? Pizza::findOrFail($request->pizza_id) : new Pizza;
+        // $pizza = $request->isMethod('put') ? Pizza::findOrFail($request->pizza_id) : new Pizza;
+        if($request->isMethod('put')) {
+            $pizza = Pizza::findOrFail($request->pizza_id);
+            $message = 'Updated Successfully!';
+        } else {
+            $message = '';
+            $pizza = new Pizza;
+        }
+        // $pizza = $request->isMethod('put') ? Pizza::findOrFail($request->pizza_id) : new Pizza;
 
         $pizza->id = $request->input('pizza_id');
         $pizza->customer_name = $request->input('customer_name');
@@ -52,7 +60,11 @@ class PizzaController extends Controller
         $pizza->crust = $request->input('crust');
 
         if($pizza->save()) {
-            return new PizzaResource($pizza);
+            if($message) {
+                return response(['data' => new PizzaResource($pizza), 'message' => $message, 'author' => 'Diether Dayondon']);
+            } else {
+                return new PizzaResource($pizza);
+            }
         }
         
     }
@@ -110,7 +122,7 @@ class PizzaController extends Controller
 
         // Delete the spicific pizza order
         if($pizza->delete()) {
-            return new PizzaResource($pizza);
+            return response(['data' => new PizzaResource($pizza), 'message' => 'Deleted Successfully!', 'author' => 'Diether Dayondon']);
         }
     }
 }
