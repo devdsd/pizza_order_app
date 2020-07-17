@@ -18,8 +18,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('/register', 'api\AuthController@register');
+Route::post('/login', 'api\AuthController@login');
+
+// Route::get('/logout', 'api\AuthController@logout');
+
 // List all pizza orders
-Route::get('/pizzas', 'PizzaController@index');
+Route::middleware('auth:api')->get('/pizzas', 'PizzaController@index');
 
 // Display specified Pizza Order
 Route::get('/pizza/{id}', 'PizzaController@show');
