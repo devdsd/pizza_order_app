@@ -21,10 +21,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/register', 'api\AuthController@register');
 Route::post('/login', 'api\AuthController@login');
 
-// Route::get('/logout', 'api\AuthController@logout');
-
 // List all pizza orders
-Route::middleware('auth:api')->get('/pizzas', 'PizzaController@index');
+Route::get('/pizzas', 'PizzaController@index')->middleware(' api');
 
 // Display specified Pizza Order
 Route::get('/pizza/{id}', 'PizzaController@show');
