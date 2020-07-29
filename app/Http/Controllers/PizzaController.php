@@ -15,11 +15,19 @@ class PizzaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Get Pizzas
-        $pizzas = Pizza::orderBy('created_at', 'desc')->paginate(5);
-        // $pizzas = Pizza::all();
+        // New Codes
+        $user = $request->user();
+
+        // // check if the user is admin or not
+        if($user->role == 0) {
+            // Get all Pizza orders (Admin)
+            $pizzas = Pizza::orderBy('created_at', 'desc')->paginate(5);
+        } else {
+            // The user specific order
+            $pizzas = Pizza::where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate(5);
+        }
 
         // return the collection of pizzas as a resource
         return PizzaResource::collection($pizzas);
@@ -44,18 +52,42 @@ class PizzaController extends Controller
      */
     public function store(Request $request)
     {
-        $pizza = $request->isMethod('put') ? Pizza::findOrFail($request->pizza_id) : new Pizza;
+        // Get the authenticated user to add order
+        $user = $request->user();
 
-        $pizza->id = $request->input('pizza_id');
-        $pizza->customer_name = $request->input('customer_name');
-        $pizza->type = $request->input('type');
-        $pizza->crust = $request->input('crust');
+        $axiosdatas = $request->get('data');
+
+        $inputvalues = array();
+
+        foreach($axiosdatas as $i) {
+            if($i != null){
+                array_push($inputvalues, $i);
+            }
+        }
+
+        $pizza = $request->isMethod('put') ? Pizza::findOrFail($inputvalues[5]) : new Pizza;
+
+
+        if(count($inputvalues) == 6 ) {
+            $pizza->id = $inputvalues[5];
+            $pizza->user_id = $inputvalues[1];
+            $pizza->customer_name = $inputvalues[2];
+            $pizza->type = $inputvalues[3];
+            $pizza->crust = $inputvalues[4];
+        } else {
+            $pizza->user_id = $inputvalues[0];
+            $pizza->customer_name = $inputvalues[1];
+            $pizza->type = $inputvalues[2];
+            $pizza->crust = $inputvalues[3];
+        }
 
         if($pizza->save()) {
             return new PizzaResource($pizza);
         }
         
+
     }
+
 
     /**
      * Display the specified resource.

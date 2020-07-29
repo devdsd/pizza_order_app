@@ -19,6 +19,7 @@ class Pizza extends JsonResource
         // define spicic format of the data
         return [
             'id' => $this->id,
+            'user_id' => $this->user_id,
             'customer_name' => $this->customer_name,
             'type' => $this->type,
             'crust' => $this->crust

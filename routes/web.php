@@ -17,10 +17,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+// Auth::routes();
 
-Route::middleware('auth')->get('/pizzas', function () {
-    return view('pizzas');
-});
+// Route::middleware('auth')->get('/pizzas', function () {
+//     return view('pizzas');
+// });
 
 // Route::get('/home', 'HomeController@index')->name('home');
